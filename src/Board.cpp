@@ -1,0 +1,107 @@
+#include "Board.hpp"
+
+
+#include <iostream>
+
+Board::Board()
+{
+    // Create the 2d-array for the gameboard
+    std::array<std::array<Piece, m_width>, m_height> m_gameBoard = {{}};
+
+    // Initialise the gameboard.
+    initBoard();
+
+}
+
+void Board::initBoard()
+{
+    // Create an empty Piece object to polulate the board.
+    Piece empty = Piece(Piece::Empty);
+
+    // Create a row of empty pieces.
+    std::array<Piece, m_height> column = {{empty, empty, empty, empty, empty, empty}};
+
+    // Create the gameboard using the empty rows.
+    std::array<std::array<Piece, m_height>, m_width> board = {{column, column, column, column, column, column, column}};
+    m_gameBoard = board;
+
+}
+
+void Board::printBoard()
+{
+    // Top border.
+    std::cout << "= = = = = = = = = = = =\n";
+    for(int y_pos=m_height-1; y_pos>=0; y_pos--)
+    {
+        // Left border.
+        std::cout << "|";
+
+        // Print the appropriate symbol for each piece.
+        for(int x_pos=0; x_pos<m_width; x_pos++)
+        {
+            if( m_gameBoard[x_pos][y_pos].getType() == Piece::Blue)
+            {
+                std::cout << " B ";
+            }
+            else if( m_gameBoard[x_pos][y_pos].getType() == Piece::Red)
+            {
+                std::cout << " R ";
+            }
+            else
+            {
+                std::cout << " . ";
+            }
+            
+        }
+        // Write border - new row
+        std::cout << "|\n";
+    }
+    // Bottom border.
+    std::cout << "= = = = = = = = = = = =\n\n";
+}
+
+bool Board::placePiece(int x_pos, Piece piece)
+{
+    if(piece.getType() == Piece::Empty)
+    {
+        return false;
+    }
+    if(x_pos > m_width)
+    {
+        return false;
+    }
+    
+
+    int y_pos = 0;
+    // While cursor remains in board
+    while(y_pos < m_height)
+    {
+        // Place the piece at first empty space in column 
+        if(m_gameBoard[x_pos][y_pos].getType() == Piece::Empty)
+        {
+            // Actually place the piece and return success.
+            m_gameBoard[x_pos][y_pos] = piece;
+            return true;
+        }
+        // decrement height cursor.
+        y_pos++;
+    }
+
+    return false;
+    
+}
+
+Piece Board::getPiece(int x, int y)
+{
+    return m_gameBoard[x][y];
+}
+
+int Board::getHeight()
+{
+    return m_height;
+}
+
+int Board::getWidth()
+{
+    return m_width;
+}
