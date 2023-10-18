@@ -6,6 +6,7 @@ class Game
 {   
     public:
         Game();
+        ~Game();
 
         enum GameType
         {
@@ -36,14 +37,6 @@ class Game
         OpponentType getOpponentType();
 
         Player* getCurrentPlayer();
-
-        void makeMove();        
-        
-        bool checkBoardFull();
-        bool checkVerticalWin();
-        bool checkHorizontalWin();
-        bool checkDiagonalWin();
-        bool isGameOver();
 
 
 

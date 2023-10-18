@@ -19,7 +19,6 @@ class Piece
         std::string getTypeString();
 
     private:
-
         Type m_type;
 
 };

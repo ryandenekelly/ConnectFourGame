@@ -8,6 +8,7 @@ WinValidator::WinValidator(Board * board)
     m_streakType = Piece::Empty;
 }
 
+
 bool WinValidator::isGameOver()
 {
     return checkBoardFull() || checkVertical() || checkHorizontal() || checkForwardDiagonal() || checkBackwardsDiagonal();

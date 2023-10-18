@@ -41,11 +41,11 @@ void Board::printBoard()
         {
             if( m_gameBoard[x_pos][y_pos].getType() == Piece::Blue)
             {
-                std::cout << " B ";
+                std::cout << " \033[1;34mⵔ\033[0m ";
             }
             else if( m_gameBoard[x_pos][y_pos].getType() == Piece::Red)
             {
-                std::cout << " R ";
+                std::cout << " \033[1;31mⵔ\033[0m ";
             }
             else
             {

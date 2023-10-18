@@ -15,12 +15,12 @@ class Board
         int getHeight();
         int getWidth();
 
+
+
+    private:
         static constexpr int m_height = 6;
         static constexpr int m_width = 7;
         std::array<std::array<Piece, m_height>, m_width> m_gameBoard;
-
-    private:
-
 
         
 };

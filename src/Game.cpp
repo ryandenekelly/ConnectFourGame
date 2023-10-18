@@ -13,6 +13,13 @@ Game::Game()
     m_winner = NULL;
 }
 
+Game::~Game()
+{
+    delete m_board;
+    delete m_playerOne;
+    delete m_playerTwo;
+}
+
 bool Game::AddUserPlayer(std::string& playerName)
 {   
     if(m_playerOne == NULL)
@@ -110,37 +117,8 @@ bool Game::startMenu()
 }
 void Game::startGame()
 {
-
+    // TODO
 }
-
-bool Game::checkDiagonalWin()
-{
-    Board *board = getBoard();
-    int h = board->getHeight();
-    int w = board->getWidth();
-
-    // valid streak origins from left side
-    for(int origin_x = 0, origin_y = h-4; origin_x>=0 && origin_y>= 0; origin_y--)
-    {
-        for(int streak_x = origin_x, streak_y = origin_y; streak_x<w && streak_y<h; streak_x++, streak_y++)
-        {
-            // TODO: comparison here
-        }
-    }
-
-    // valid streak origins from bottom side
-    for(int origin_x = w-4, origin_y = 0; origin_x>0 && origin_y>= 0; origin_x--)
-    {
-        for(int streak_x = origin_x, streak_y = origin_y; streak_x<w && streak_y<h; streak_x++, streak_y++)
-        {
-            // TODO: comparison here
-        }
-    }
-    return false;
-}
-
-
-
 
 void Game::changeTurn()
 {

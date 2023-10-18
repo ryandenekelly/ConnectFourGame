@@ -6,6 +6,7 @@
 #include "Game.hpp"
 #include "WinValidator.hpp"
 
+
 int main(int argc, char *argv[])
 {
 
@@ -75,7 +76,6 @@ int main(int argc, char *argv[])
         }
         // Print out the board after the move
         game.getBoard()->printBoard();
-
 
 
         {
