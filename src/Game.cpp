@@ -113,106 +113,6 @@ void Game::startGame()
 
 }
 
-
-bool Game::checkVerticalWin()
-{
-    Board *board = getBoard();
-    
-    // Go along the width of the board.
-    for(int x_pos = 0; x_pos < board->getWidth(); x_pos++)
-    {
-        // Go up the column looking for streaks.
-        Piece::Type streakType = Piece::Empty;
-        int streakCount = 0;
-        
-        for(int y_pos=0; y_pos < board->getHeight(); y_pos++)
-        {
-            Piece currentPiece = board->getPiece(x_pos, y_pos);
-            // if you reach an empty piece, that means no streak; Move to the next column.
-            if(currentPiece.getType() == Piece::Empty)
-            {
-                break;
-            }
-            // if steakType is still empty, a streak has not been started - so we start it.
-            if(streakType == Piece::Empty)
-            {
-                streakType = currentPiece.getType();
-                streakCount++;
-                continue;
-            }
-            // if the current streakType is the same as the current type, then increment the streak type
-            if(streakType == currentPiece.getType())
-            {
-                streakCount++;
-            }
-            // else it is not the same, so switch the type and reset the streak.
-            else
-            {
-                
-                streakType = currentPiece.getType();
-                streakCount = 1;
-                continue;
-            }
-            if(streakCount>=4)
-            {
-                std::cout << getCurrentPlayer()->getPlayerName() << " Wins!\n";
-                return true;
-            }
-
-        }
-    }
-    return false;
-}
-
-bool Game::checkHorizontalWin()
-{
-    Board *board = getBoard();
-
-    // go up the column.
-    for(int y_pos=0; y_pos < board->getHeight(); y_pos++)
-    {
-        Piece::Type streakType = Piece::Empty;
-        int streakCount = 0;
-
-        // go accross the rows looking for streaks
-        for(int x_pos=0; x_pos < board->getWidth(); x_pos++)
-        {
-            Piece currentPiece = board->getPiece(x_pos, y_pos);
-            // if you reach an empty piece, that means no streak; Move to the next column.
-            if(currentPiece.getType() == Piece::Empty)
-            {
-                break;
-            }
-            // if steakType is still empty, a streak has not been started - so we start it.
-            if(streakType == Piece::Empty)
-            {
-                streakType = currentPiece.getType();
-                streakCount++;
-                continue;
-            }
-            // if the current streakType is the same as the current type, then increment the streak type
-            if(streakType == currentPiece.getType())
-            {
-                streakCount++;
-            }
-            // else it is not the same, so switch the type and reset the streak.
-            else
-            {
-                
-                streakType = currentPiece.getType();
-                streakCount = 1;
-                continue;
-            }
-            if(streakCount>=4)
-            {
-                std::cout << getCurrentPlayer()->getPlayerName() << " Wins!\n";
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 bool Game::checkDiagonalWin()
 {
     Board *board = getBoard();
@@ -239,17 +139,8 @@ bool Game::checkDiagonalWin()
     return false;
 }
 
-bool Game::checkBoardFull()
-{
-    return false;
-}
 
 
-bool Game::isGameOver()
-{
-    // NB: short-circuit evaluation.
-    return checkBoardFull() || checkVerticalWin() || checkHorizontalWin() || checkDiagonalWin();
-}
 
 void Game::changeTurn()
 {

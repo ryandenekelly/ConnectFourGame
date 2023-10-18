@@ -7,7 +7,7 @@
 class WinValidator
 {
     public:
-        WinValidator(Board * board, Piece::Type streakType);
+        WinValidator(Board * board);
         
         enum ValidatorStatus
         {
@@ -29,6 +29,8 @@ class WinValidator
         bool checkVertical();
         bool checkHorizontal();
         bool checkDiagonal();
+        bool checkForwardDiagonal();
+        bool checkBackwardsDiagonal();
 
 };
 #endif

@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
     // Create a new game
     Game game = Game();
 
-
     // Run the start menu
     game.startMenu();
 
@@ -80,18 +79,13 @@ int main(int argc, char *argv[])
 
 
         {
-            WinValidator validator = WinValidator(game.getBoard(), Piece::Red);
+            WinValidator validator = WinValidator(game.getBoard());
             if(validator.isGameOver())
             {
                 std::cout << game.getCurrentPlayer()->getPlayerName() << " wins!\n";
                 break;
             }
-        }
-
-        // if(game.isGameOver())
-        // {
-        //     break;
-        // }        
+        }      
         
         // Switch the turn.
         game.changeTurn();
@@ -102,6 +96,6 @@ int main(int argc, char *argv[])
 
 
 
-
+    return 0;
 
 }
