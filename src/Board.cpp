@@ -11,6 +11,8 @@ Board::Board()
     // Initialise the gameboard.
     initBoard();
 
+    m_topOfColumns = {};
+
 }
 
 void Board::initBoard()
@@ -30,7 +32,7 @@ void Board::initBoard()
 void Board::printBoard()
 {
     // Top border.
-    std::cout << "= = = = = = = = = = = =\n";
+    std::cout << TOP_BORDER;
     for(int y_pos=m_height-1; y_pos>=0; y_pos--)
     {
         // Left border.
@@ -57,7 +59,8 @@ void Board::printBoard()
         std::cout << "|\n";
     }
     // Bottom border.
-    std::cout << "= = = = = = = = = = = =\n\n";
+    std::cout << BOTTOM_BORDER;
+
 }
 
 bool Board::placePiece(int x_pos, Piece piece)
@@ -66,28 +69,20 @@ bool Board::placePiece(int x_pos, Piece piece)
     {
         return false;
     }
-    if(x_pos > m_width)
+    if(x_pos >= m_width)
     {
         return false;
     }
-    
 
-    int y_pos = 0;
-    // While cursor remains in board
-    while(y_pos < m_height)
+    int topOfColumn = m_topOfColumns[x_pos];
+    if(topOfColumn >= m_height)
     {
-        // Place the piece at first empty space in column 
-        if(m_gameBoard[x_pos][y_pos].getType() == Piece::Empty)
-        {
-            // Actually place the piece and return success.
-            m_gameBoard[x_pos][y_pos] = piece;
-            return true;
-        }
-        // decrement height cursor.
-        y_pos++;
+        return false;
     }
+    m_gameBoard[x_pos][topOfColumn] = piece;
+    m_topOfColumns[x_pos]++;
+    return true;
 
-    return false;
     
 }
 
@@ -104,4 +99,9 @@ int Board::getHeight()
 int Board::getWidth()
 {
     return m_width;
+}
+
+std::array<int,7> Board::getTopOfColumns()
+{
+    return m_topOfColumns;
 }

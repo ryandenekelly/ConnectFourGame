@@ -44,7 +44,7 @@ std::string Player::getPlayerName()
     return m_playerName;
 }
 
-int Player::getMove()
+int Player::getMove(Board * board)
 {
     return 0;
 }

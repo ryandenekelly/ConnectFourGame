@@ -1,3 +1,6 @@
+#ifndef GAME_HPP
+#define GAME_HPP
+
 #include "Player.hpp"
 #include "Board.hpp"
 #include <memory>
@@ -21,14 +24,14 @@ class Game
             ExpMax
         };
 
-        bool AddUserPlayer(std::string& playerName);
-        bool AddComputerPlayer(Game::OpponentType opponentType);
+        bool AddPlayer(std::string& playerName);
+        bool AddPlayer(Game::OpponentType opponentType);
         void startGame();
 
         void changeTurn();
         bool startMenu();
         bool opponentMenu();
-        bool initTurnSwitcher();
+        bool initCurrentPlayer();
         void endGame();
 
         Board* getBoard();
@@ -37,6 +40,10 @@ class Game
         OpponentType getOpponentType();
 
         Player* getCurrentPlayer();
+
+        void setBoardFull();
+        bool isBoardFull();
+
 
 
 
@@ -49,9 +56,11 @@ class Game
         Player *m_currentPlayer;
         int m_score;
         Player* m_winner;
+        bool m_boardFull;
 
         
 
 
 };
 
+#endif

@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "Piece.hpp"
+#include "Board.hpp"
 
 #include <string>
 
@@ -23,7 +24,7 @@ class Player
         void setPlayerName(std::string name);
         std::string getPlayerName();
 
-        virtual int getMove();
+        virtual int getMove(Board * board);
 
 
     

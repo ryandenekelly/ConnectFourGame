@@ -1,37 +1,32 @@
-#ifndef WIN_VALIDATOR_HPP
-#define WIN_VALIDATOR_HPP
+#ifndef VALIDATOR_HPP
+#define VALIDATOR_HPP
 
 #include "Piece.hpp"
 #include "Board.hpp"
+#include <vector>
 
-class WinValidator
+class Validator
 {
     public:
-        WinValidator(Board * board);
+        Validator(Board * board);
         
         enum ValidatorStatus
         {
-            NextCandidate,
             NextPiece,
             StreakNotFound,
             StreakFound
         };
 
-        bool isGameOver(int streak_length=4);
-        bool findStreak(int candidate_column, int top_of_column, int streak_length);
+        std::vector<std::pair<Piece::Type, int>> findStreaks(int candidate_column, int top_of_column, int streak_length);
 
     private:
+        Piece::Type m_pieceType;
         Board * m_board;
         Piece::Type m_streakType;
         int m_streakCount;
 
-        ValidatorStatus checkStreak(int x_pos, int y_pos, int streak_length);
-        bool checkBoardFull();
-        bool checkVertical(int streak_length);
-        bool checkHorizontal(int streak_length);
-        bool checkDiagonal(int streak_length);
-        bool checkForwardDiagonal(int streak_length);
-        bool checkBackwardsDiagonal(int streak_length);
+        inline void checkOpposite(std::vector<std::pair<Piece::Type, int>>& streaks, std::pair<Piece::Type,
+            int>& leftStreak, std::pair<Piece::Type, int>& rightStreak);
 
         ValidatorStatus computeStreakIteration(int x_pos, int y_pos, int streak_length);
         bool checkTopLeft(int candidate_column, int top_of_column, int streak_length);

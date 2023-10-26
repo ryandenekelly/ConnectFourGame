@@ -1,5 +1,9 @@
 #include "WinValidator.hpp"
 #include <iostream>
+#include <vector>
+
+#define BUILD_LOOP(TYPE) ()
+#define TOP_LEFT(X,Y,H) ({for(int x_pos=X, y_pos=Y; x_pos>=0 && y_pos<=H; x_pos--, y_pos++)})
 
 WinValidator::WinValidator(Board * board)
 {
@@ -9,15 +13,35 @@ WinValidator::WinValidator(Board * board)
 }
 
 
-bool WinValidator::isGameOver()
+bool WinValidator::isGameOver(int streak_length)
 {
-    return checkBoardFull() || checkVertical() || checkHorizontal() || checkForwardDiagonal() || checkBackwardsDiagonal();
+    if(checkBoardFull())
+    {
+        return true;
+    }
+    if(checkVertical(streak_length))
+    {
+        return true;
+    }
+    if(checkHorizontal(streak_length))
+    {
+        return true;
+    }
+    if(checkForwardDiagonal(streak_length))
+    {
+        return true;
+    }
+    if(checkBackwardsDiagonal(streak_length))
+    {
+        return true;
+    }
+    return false;
 }
 
-WinValidator::ValidatorStatus WinValidator::checkStreak(int x_pos, int y_pos)
+WinValidator::ValidatorStatus WinValidator::checkStreak(int x_pos, int y_pos, int streak_length)
 {
     Piece currentPiece = m_board->getPiece(x_pos, y_pos);
-    // if you reach an empty piece, that means no streak; Move to the next column.
+    // if you reach an empty piece, that means no streak; Move to the next column. TODO: Fix me - this doesn't apply to diagonals!
     if(currentPiece.getType() == Piece::Empty)
     {
         return NextCandidate;
@@ -41,7 +65,7 @@ WinValidator::ValidatorStatus WinValidator::checkStreak(int x_pos, int y_pos)
         m_streakCount = 1;
         return NextPiece;
     }
-    if(m_streakCount>=4)
+    if(m_streakCount>=streak_length)
     {
         return StreakFound;
     }
@@ -50,21 +74,23 @@ WinValidator::ValidatorStatus WinValidator::checkStreak(int x_pos, int y_pos)
 
 bool WinValidator::checkBoardFull()
 {
-    int fullColumnCounter = 0;
-    for(int x_pos=0; x_pos < m_board->getWidth(); x_pos++)
+    int w = m_board->getWidth();
+    for(int x_pos = 0; x_pos < w; x_pos++)
     {
-        m_streakType = Piece::Empty;
-        m_streakCount = 0;
-
         if(m_board->getPiece(x_pos, m_board->getHeight()-1).getType() != Piece::Empty)
         {
-            fullColumnCounter++;
+            continue;
+        }
+        else
+        {
+            return false;
         }
     }
-    return fullColumnCounter>m_board->getWidth() ? true : false;
+
+    return true;
 }
 
-bool WinValidator::checkVertical()
+bool WinValidator::checkVertical(int streak_length)
 {
     // Go along the width of the board.
     for(int x_pos = 0; x_pos < m_board->getWidth(); x_pos++)
@@ -73,7 +99,7 @@ bool WinValidator::checkVertical()
         m_streakCount = 0;
         for(int y_pos=0; y_pos < m_board->getHeight(); y_pos++)
         {
-            ValidatorStatus status = checkStreak(x_pos, y_pos);
+            ValidatorStatus status = checkStreak(x_pos, y_pos, streak_length);
             if(status == NextCandidate)
             {
                 break;
@@ -92,7 +118,7 @@ bool WinValidator::checkVertical()
     return false;
 }
 
-bool WinValidator::checkHorizontal()
+bool WinValidator::checkHorizontal(int streak_length)
 {
     // go up the column.
     for(int y_pos=0; y_pos < m_board->getHeight(); y_pos++)
@@ -101,7 +127,7 @@ bool WinValidator::checkHorizontal()
         m_streakCount = 0;
         for(int x_pos=0; x_pos < m_board->getWidth(); x_pos++)
         {
-            ValidatorStatus status = checkStreak(x_pos, y_pos);
+            ValidatorStatus status = checkStreak(x_pos, y_pos, streak_length);
             if(status == NextCandidate)
             {
                 break;
@@ -119,7 +145,7 @@ bool WinValidator::checkHorizontal()
     return false;
 }
 
-bool WinValidator::checkForwardDiagonal()
+bool WinValidator::checkForwardDiagonal(int streak_length)
 {
     int h = m_board->getHeight();
     int w = m_board->getWidth();
@@ -129,16 +155,12 @@ bool WinValidator::checkForwardDiagonal()
     {
         m_streakType = Piece::Empty;
         m_streakCount = 0;
-        // std::cout << "(" << origin_x << "," << origin_y << ")\n";
         for(int streak_x = origin_x, streak_y = origin_y; streak_x<w && streak_y<h; streak_x++, streak_y++)
         {
             // TODO: comparison here
-            ValidatorStatus status = checkStreak(streak_x, streak_y);
-            if(status == NextCandidate)
-            {
-                break;
-            }
-            else if (status == StreakFound)
+            ValidatorStatus status = checkStreak(streak_x, streak_y, streak_length);
+            // For diagonals we can't early exit here.
+            if (status == StreakFound)
             {
                 return true;
             }
@@ -154,16 +176,13 @@ bool WinValidator::checkForwardDiagonal()
     {
         m_streakType = Piece::Empty;
         m_streakCount = 0;
-        // std::cout << "(" << origin_x << "," << origin_y << ")\n";
+
         for(int streak_x = origin_x, streak_y = origin_y; streak_x<w && streak_y<h; streak_x++, streak_y++)
         {
             // TODO: comparison here
-            ValidatorStatus status = checkStreak(streak_x, streak_y);
-            if(status == NextCandidate)
-            {
-                break;
-            }
-            else if (status == StreakFound)
+            ValidatorStatus status = checkStreak(streak_x, streak_y, streak_length);
+            // For diagonals we can't early exit here.
+            if (status == StreakFound)
             {
                 return true;
             }
@@ -176,7 +195,7 @@ bool WinValidator::checkForwardDiagonal()
     return false;
 }
 
-bool WinValidator::checkBackwardsDiagonal()
+bool WinValidator::checkBackwardsDiagonal(int streak_length)
 {
     int h = m_board->getHeight();
     int w = m_board->getWidth();
@@ -187,16 +206,12 @@ bool WinValidator::checkBackwardsDiagonal()
     {
         m_streakType = Piece::Empty;
         m_streakCount = 0;
-        // std::cout << "(" << origin_x << "," << origin_y << ")\n";
         for(int streak_x = origin_x, streak_y = origin_y; streak_x>=0 && streak_y<h; streak_x--, streak_y++)
         {
             // TODO: comparison here           
-            ValidatorStatus status = checkStreak(streak_x, streak_y);
-            if(status == NextCandidate)
-            {
-                break;
-            }
-            else if (status == StreakFound)
+            ValidatorStatus status = checkStreak(streak_x, streak_y, streak_length);
+            // For diagonals we can't early exit here.
+            if (status == StreakFound)
             {
                 return true;
             }
@@ -208,22 +223,17 @@ bool WinValidator::checkBackwardsDiagonal()
     }
 
     // valid streak origins from bottom side
-    for(int origin_x = w-2, origin_y = 0; origin_x>=midpoint && origin_y>= 0; origin_x--)
+    for(int origin_x = w-1, origin_y = 0; origin_x>=midpoint && origin_y>= 0; origin_x--)
     {
         m_streakType = Piece::Empty;
         m_streakCount = 0;
 
-        // std::cout << "(" << origin_x << "," << origin_y << ")\n";
-
         for(int streak_x = origin_x, streak_y = origin_y; streak_x>=0 && streak_y<h; streak_x--, streak_y++)
         {
             // TODO: comparison here            
-            ValidatorStatus status = checkStreak(streak_x, streak_y);
-            if(status == NextCandidate)
-            {
-                break;
-            }
-            else if (status == StreakFound)
+            ValidatorStatus status = checkStreak(streak_x, streak_y, streak_length);
+            // For diagonals we can't early exit here.
+            if (status == StreakFound)
             {
                 return true;
             }
@@ -232,11 +242,7 @@ bool WinValidator::checkBackwardsDiagonal()
                 continue;
             }
         }
-    }
-    return false;
-}
 
-bool WinValidator::checkDiagonal()
-{
+    }
     return false;
 }

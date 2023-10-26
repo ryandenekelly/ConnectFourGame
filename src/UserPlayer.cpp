@@ -13,8 +13,9 @@ UserPlayer::UserPlayer( Piece::Type type, std::string name)
     setPlayerName(name);
 }
 
-int UserPlayer::getMove()
+int UserPlayer::getMove(Board * board)
 {
+
     std::cout << "Please enter a column to place your piece:\n";
     int move;
     std::cin >> move;

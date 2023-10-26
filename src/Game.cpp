@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "Player.hpp"
 #include "UserPlayer.hpp"
+#include "ComputerPlayer.hpp"
 #include <iostream>
 
 Game::Game()
@@ -11,6 +12,7 @@ Game::Game()
     m_currentPlayer = NULL;
     m_score = 0;
     m_winner = NULL;
+    m_boardFull = false;
 }
 
 Game::~Game()
@@ -20,7 +22,7 @@ Game::~Game()
     delete m_playerTwo;
 }
 
-bool Game::AddUserPlayer(std::string& playerName)
+bool Game::AddPlayer(std::string& playerName)
 {   
     if(m_playerOne == NULL)
     {
@@ -40,9 +42,53 @@ bool Game::AddUserPlayer(std::string& playerName)
 
 }
 
-bool Game::AddComputerPlayer(Game::OpponentType opponentType)
+bool Game::AddPlayer(Game::OpponentType opponentType)
 {
-    return true;
+
+    if(m_playerOne == NULL)
+    {
+        switch(opponentType)
+        {
+            case Game::Reflex:
+                m_playerOne = new ReflexPlayer();
+                return true;
+            
+            case Game::MiniMax:
+                m_playerOne = new MiniMaxPlayer();
+                return true;
+
+            case Game::ExpMax:
+                m_playerOne = new ExpMaxPlayer();
+                return true;
+            
+            default:
+            return false;
+        }
+    }
+    else if(m_playerTwo == NULL)
+    {
+        switch(opponentType)
+        {
+            case Game::Reflex:
+                m_playerTwo = new ReflexPlayer(Piece::Blue);
+                return true;
+            
+            case Game::MiniMax:
+                m_playerTwo = new MiniMaxPlayer();
+                return true;
+
+            case Game::ExpMax:
+                m_playerTwo = new ExpMaxPlayer();
+                return true;
+            
+            default:
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool Game::opponentMenu()
@@ -54,8 +100,9 @@ bool Game::opponentMenu()
         std::cout << "1) Reflex\n" << "2) MiniMax\n" << "3) ExpMax\n" << "B) Back\n";
         
         char oppSelection = 0;
-        std::cin >> oppSelection;
-        
+        //std::cin >> oppSelection;
+        oppSelection = '1';
+
         switch(oppSelection)
         {
             case '1':
@@ -91,7 +138,7 @@ bool Game::startMenu()
         std::cout << "1) One Player\n" << "2) Two Player\n" << "X) Exit\n";
 
         char menuSelection = 0;
-        menuSelection = '2';
+        menuSelection = '1';
         // std::cin >> menuSelection;
 
         switch(menuSelection)
@@ -144,7 +191,7 @@ Game::OpponentType Game::getOpponentType()
     return m_opponentType;
 }
 
-bool Game::initTurnSwitcher()
+bool Game::initCurrentPlayer()
 {
     if(m_playerOne == NULL || m_playerTwo == NULL)
     {
@@ -170,4 +217,14 @@ void Game::endGame()
 Player* Game::getCurrentPlayer()
 {
     return m_currentPlayer;
+}
+
+void Game::setBoardFull()
+{
+    m_boardFull = true;
+}
+
+bool Game::isBoardFull()
+{
+    return m_boardFull;
 }

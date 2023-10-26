@@ -1,10 +1,12 @@
 #include <iostream>
+#include <ostream>
 
 #include "Board.hpp"
 #include "Player.hpp"
 #include "UserPlayer.hpp"
 #include "Game.hpp"
 #include "WinValidator.hpp"
+#include "utils.hpp"
 
 
 int main(int argc, char *argv[])
@@ -30,25 +32,26 @@ int main(int argc, char *argv[])
             playerTwoName = "PlayerTwo";
             // std::cin >> playerTwoName;
 
-            game.AddUserPlayer(playerOneName);
-            game.AddUserPlayer(playerTwoName);
+            game.AddPlayer(playerOneName);
+            game.AddPlayer(playerTwoName);
             
-            game.initTurnSwitcher();
 
         }
         // one player; prompt one name and assign ai type
         else if(game.getGameType() == Game::OnePlayer)
         {
             std::cout << "Please enter your name:\n";
-            std::string playerName;
-            std::cin >> playerName;
 
-            game.AddUserPlayer(playerName);
-            game.AddComputerPlayer(game.getOpponentType());
+            std::string playerOneName;
+            playerOneName = "PlayerOne";
+            // std::cin >> playerOneName;
 
-            game.initTurnSwitcher();
+            game.AddPlayer(playerOneName);
+            game.AddPlayer(game.getOpponentType());
+
+            
         }
-
+    game.initCurrentPlayer();
     /* Main gameplay loop*/
 
     // Print out the board at the start
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
         while(!validMove)
         {   
             // Get the move from the player agent.
-            move = game.getCurrentPlayer()->getMove();
+            move = game.getCurrentPlayer()->getMove(game.getBoard());
             // Place the piece if the move is valid.
             validMove = game.getBoard()->placePiece(move, currentPiece);
             if(!validMove)
@@ -78,11 +81,22 @@ int main(int argc, char *argv[])
         game.getBoard()->printBoard();
 
 
+        // NB: I know that checking the whole board at the end of each turn
+        // for a win condition is not the best way to do it, but it's implemneted
+        // and I can't be bothered changing it. I will change it if speed because an issue.
+
+        //TODO: Make win validation check just the siz direction around the piece that was placed
+        //** it's O(8*4) vs ~O(7*6*2 + 28*2) **//
         {
             WinValidator validator = WinValidator(game.getBoard());
-            if(validator.isGameOver())
+            if(validator.isGameOver() && !game.isBoardFull())
             {
                 std::cout << game.getCurrentPlayer()->getPlayerName() << " wins!\n";
+                break;
+            }
+            else if(game.isBoardFull())
+            {
+                std::cout << "Board is full!\n";
                 break;
             }
         }      
@@ -91,10 +105,6 @@ int main(int argc, char *argv[])
         game.changeTurn();
     }
     
-
-
-
-
 
     return 0;
 
