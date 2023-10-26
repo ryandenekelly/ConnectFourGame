@@ -58,7 +58,10 @@
         "random": "cpp",
         "string_view": "cpp",
         "fstream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp"
     },
     "cmake.configureOnOpen": true
 }

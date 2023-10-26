@@ -5,6 +5,7 @@
             "label": "C/C++: g++ build active file",
             "command": "g++",
             "args": [
+                "-std=gnu++17",
                 "-g",
                 "-I",
                 "${workspaceFolder}/include/",
