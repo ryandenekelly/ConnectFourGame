@@ -1,17 +1,23 @@
 #include <iostream>
 #include <ostream>
+#include <chrono>
 
 #include "Board.hpp"
 #include "Player.hpp"
 #include "UserPlayer.hpp"
+#include "ComputerPlayer.hpp"
 #include "Game.hpp"
 #include "WinValidator.hpp"
+#include "Validator.hpp"
+#include "QuickValidator.hpp"
 #include "utils.hpp"
+
+
 
 
 int main(int argc, char *argv[])
 {
-
+using namespace std::chrono;
     // Create a new game
     Game game = Game();
 

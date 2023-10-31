@@ -20,7 +20,6 @@ int ReflexPlayer::getMove(Board * board)
 {
     using namespace std::chrono_literals;
 
-    std::this_thread::sleep_for(500ms);
     // NB: Misleading name; Can give an illeagal move - if top of column is greater than the board height!
     auto listOfLegalMoves = board->getTopOfColumns();
     std::array<int, 7> moveValues = {};

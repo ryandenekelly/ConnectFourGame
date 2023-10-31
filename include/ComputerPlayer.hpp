@@ -22,6 +22,7 @@ class ReflexPlayer : public ComputerPlayer
 {
     public:
         ReflexPlayer();
+
         ReflexPlayer(Piece::Type type) : ComputerPlayer(type) {};
         virtual int getMove(Board * board);
         int getMoveValue(std::vector<std::pair<Piece::Type, int>> streaks);

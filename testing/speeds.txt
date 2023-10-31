@@ -1,0 +1,55 @@
+Quick: 1200     Validator: 5500
+Quick: 600      Validator: 12400
+Quick: 1700     Validator: 3600
+Quick: 600      Validator: 3600
+Quick: 900      Validator: 3600
+Quick: 1000     Validator: 13900
+Quick: 900      Validator: 4000
+Quick: 1000     Validator: 3900
+
+Quick: 1100     Validator: 5600
+Quick: 700      Validator: 1600
+Quick: 400      Validator: 1500
+Quick: 500      Validator: 2700
+Quick: 700      Validator: 1400
+Quick: 900      Validator: 3000
+Quick: 700      Validator: 1700
+Quick: 800      Validator: 2600
+
+Quick: 1800     Validator: 5800
+Quick: 600      Validator: 1500
+Quick: 400      Validator: 2700
+Quick: 600      Validator: 1500
+Quick: 800      Validator: 2500
+Quick: 600      Validator: 1700
+Quick: 400      Validator: 1600
+Quick: 500      Validator: 1500
+
+.   .   .   .   .   .   .   .   
+
+Quick: 1800     Validator: 7900
+Quick: 1100     Validator: 14000
+Quick: 1100     Validator: 4000
+Quick: 1000     Validator: 3700
+Quick: 1000     Validator: 4100
+Quick: 1000     Validator: 2800
+Quick: 1200     Validator: 3900
+Quick: 800      Validator: 4100
+
+Quick: 3100     Validator: 15900
+Quick: 700      Validator: 1500
+Quick: 500      Validator: 1500
+Quick: 400      Validator: 1500
+Quick: 400      Validator: 2500
+Quick: 900      Validator: 2700
+Quick: 900      Validator: 2700
+Quick: 800      Validator: 2700
+
+Quick: 2000     Validator: 6600
+Quick: 1200     Validator: 3700
+Quick: 1100     Validator: 3400
+Quick: 1000     Validator: 3600
+Quick: 700      Validator: 2100
+Quick: 1000     Validator: 2600
+Quick: 600      Validator: 2400
+Quick: 1100     Validator: 3800

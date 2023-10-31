@@ -80,7 +80,13 @@ bool Board::placePiece(int x_pos, Piece piece)
         return false;
     }
     m_gameBoard[x_pos][topOfColumn] = piece;
-    m_topOfColumns[x_pos]++;
+
+    // if column is full mark it with -1.
+    if(++m_topOfColumns[x_pos]>=m_height)
+    {
+        m_topOfColumns[x_pos] = ColumnFull;
+    }
+    
     return true;
 
     
@@ -88,7 +94,11 @@ bool Board::placePiece(int x_pos, Piece piece)
 
 Piece Board::getPiece(int x, int y)
 {
-    return m_gameBoard[x][y];
+    if( (x>=0 && x<m_width) && (y>=0 && y<m_height) )
+    {
+        return m_gameBoard[x][y];
+    }
+    return Piece::Empty;
 }
 
 int Board::getHeight()
@@ -104,4 +114,16 @@ int Board::getWidth()
 std::array<int,7> Board::getTopOfColumns()
 {
     return m_topOfColumns;
+}
+
+void Board::resetBoard()
+{
+    // Reset "stack pointers".
+    std::fill(m_topOfColumns.begin(), m_topOfColumns.end(), Piece::Empty);
+    
+    // Reset board by columns.
+    for(auto& a : m_gameBoard)
+    {
+        std::fill(a.begin(), a.end(), Piece::Empty);
+    }
 }

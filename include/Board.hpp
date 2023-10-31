@@ -15,6 +15,12 @@ class Board
         int getHeight();
         int getWidth();
         std::array<int, 7> getTopOfColumns();
+        void resetBoard();
+
+        enum ColumnStatus
+        {
+            ColumnFull = -1
+        };
 
 
 
