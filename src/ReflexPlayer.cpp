@@ -24,14 +24,16 @@ int ReflexPlayer::getMove(Board * board)
     
     std::array<int, 7> moveValues = {};
 
+    auto legalMoves = board->getLegalMoves();
     // Iterate through all "legal" moves.
-    for(int i=0; i<board->getWidth(); i++)
+    
+    QuickValidator validator = QuickValidator(board);
+    for(auto move : legalMoves)
     {
         // find the score of the moves by counting how may streaks of the same token branch from that position
-        QuickValidator validator = QuickValidator(board);
-        auto streak = validator.getStreak(i);
-        // if a streak > 2 can exist there, assign a value to it.
-        moveValues[i] = getMoveValue(streak);
+        auto streak = validator.getStreak(move);
+        // if a streak can exist there, assign a value to it.
+        moveValues[move] = getMoveValue(streak);
     }
     // find the best move and its index frpm the list.
     auto maxElement = std::max_element(moveValues.begin(), moveValues.end());
@@ -47,7 +49,7 @@ int ReflexPlayer::getMoveValue(QuickValidator::Streak streak)
     if(streak.type == getPiece())
     {
         // super high value to end game
-        value = streak.count >= 3 ? 400 : 10 * streak.count;
+        value = streak.count > 3 ? 400 : 10 * streak.count;
     }
     else if(streak.type == Piece::Empty)
     {
@@ -56,7 +58,7 @@ int ReflexPlayer::getMoveValue(QuickValidator::Streak streak)
     // opp streak
     else
     {
-        value = streak.count >= 3 ? 200 : 10 * streak.count;
+        value = streak.count > 3 ? 200 : 10 * streak.count;
     }
 
     return value;

@@ -23,7 +23,7 @@ QuickValidator::Streak QuickValidator::isWinningMove(int x_pos)
 
     // Left+Right
     // Have to account for (x_pos, y_pos) being counted twice!
-    countArray[2] = leftType == rightType ? 
+    countArray[2] = (leftType != Piece::Empty) && (leftType == rightType) ? 
         (struct Streak){(countArray[0].count + countArray[1].count-1), leftType} 
             : (struct Streak){0, Piece::Empty};
     
@@ -36,7 +36,7 @@ QuickValidator::Streak QuickValidator::isWinningMove(int x_pos)
 
     // Forwards up+down
     // Have to account for (x_pos, y_pos) being counted twice!
-    countArray[5] = forwardsTypeUp == forwardsTypeDown ?
+    countArray[5] = (forwardsTypeUp != Piece::Empty) && (forwardsTypeUp == forwardsTypeDown) ?
         (struct Streak){countArray[3].count + countArray[4].count-1, forwardsTypeUp} 
             : (struct Streak){0, Piece::Empty};
 
@@ -49,7 +49,7 @@ QuickValidator::Streak QuickValidator::isWinningMove(int x_pos)
     
     // Backwards up+down
     // Have to account for (x_pos, y_pos) being counted twice!
-    countArray[8] = backwardsTypeUp == backwardsTypeDown ?
+    countArray[8] = (backwardsTypeUp != Piece::Empty) && (backwardsTypeUp == backwardsTypeDown) ?
         (struct Streak){countArray[6].count + countArray[7].count-1, backwardsTypeUp}
             : (struct Streak){0, Piece::Empty};
 
@@ -69,17 +69,16 @@ QuickValidator::Streak QuickValidator::getStreak(int x_pos)
     // get the top of
     int y_pos = m_board->getTopOfColumns()[x_pos];
 
-
     // Left
     Piece::Type leftType = m_board->getPiece(x_pos-1, y_pos).getType();
-    countArray[0] = {countLeft(x_pos, y_pos, leftType) + 1, leftType};
+    countArray[0] = {countLeft(x_pos-1, y_pos, leftType) + 1, leftType};
 
     // Right
     Piece::Type rightType = m_board->getPiece(x_pos+1, y_pos).getType();
     countArray[1] = {countRight(x_pos+1, y_pos, rightType) + 1, rightType};
     
     // Left+Right
-    countArray[2] = leftType == rightType ? 
+    countArray[2] = (leftType != Piece::Empty) && (leftType == rightType) ? 
         (struct Streak){(countArray[0].count + countArray[1].count) + 1, leftType} 
             : (struct Streak){0, Piece::Empty};
 
@@ -90,7 +89,7 @@ QuickValidator::Streak QuickValidator::getStreak(int x_pos)
     Piece::Type forwardsTypeDown = m_board->getPiece(x_pos-1, y_pos-1).getType();
     countArray[4] = {countForwardsDiagonalDown(x_pos-1, y_pos-1, forwardsTypeDown) + 1, forwardsTypeDown};
     
-    countArray[5] = forwardsTypeUp == forwardsTypeDown ?
+    countArray[5] = (forwardsTypeUp != Piece::Empty) && (forwardsTypeUp == forwardsTypeDown) ?
         (struct Streak){countArray[3].count + countArray[4].count + 1, forwardsTypeUp} 
             : (struct Streak){0, Piece::Empty};
 
@@ -102,7 +101,7 @@ QuickValidator::Streak QuickValidator::getStreak(int x_pos)
     countArray[7] = {countBackwardsDiagonalDown(x_pos+1, y_pos-1, backwardsTypeDown) + 1, backwardsTypeDown};
 
     // Forwards+Backwards
-    countArray[8] = backwardsTypeUp == backwardsTypeDown ?
+    countArray[8] = (backwardsTypeUp != Piece::Empty) && (backwardsTypeUp == backwardsTypeDown) ?
         (struct Streak){countArray[6].count + countArray[7].count + 1, backwardsTypeUp}
             : (struct Streak){0, Piece::Empty};
 
@@ -110,7 +109,7 @@ QuickValidator::Streak QuickValidator::getStreak(int x_pos)
     Piece::Type downType = m_board->getPiece(x_pos, y_pos-1).getType();
     countArray[9] = {countDown(x_pos, y_pos-1, downType) + 1, downType};
 
-    // return {0, Piece::Empty};
+  
     auto max = std::max_element(countArray.begin(), countArray.end(), [](const Streak& a, const Streak& b){ return a.count < b.count; });
 
     return *max;
@@ -120,6 +119,11 @@ QuickValidator::Streak QuickValidator::getStreak(int x_pos)
 inline int QuickValidator::countLeft(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -142,6 +146,11 @@ inline int QuickValidator::countLeft(int origin_x, int origin_y, Piece::Type cur
 inline int QuickValidator::countRight(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -164,6 +173,11 @@ inline int QuickValidator::countRight(int origin_x, int origin_y, Piece::Type cu
 inline int QuickValidator::countForwardsDiagonalUp(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+    
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -186,6 +200,11 @@ inline int QuickValidator::countForwardsDiagonalUp(int origin_x, int origin_y, P
 inline int QuickValidator::countForwardsDiagonalDown(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -208,6 +227,11 @@ inline int QuickValidator::countForwardsDiagonalDown(int origin_x, int origin_y,
 inline int QuickValidator::countBackwardsDiagonalUp(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -230,6 +254,11 @@ inline int QuickValidator::countBackwardsDiagonalUp(int origin_x, int origin_y, 
 inline int QuickValidator::countBackwardsDiagonalDown(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;
@@ -252,6 +281,11 @@ inline int QuickValidator::countBackwardsDiagonalDown(int origin_x, int origin_y
 inline int QuickValidator::countDown(int origin_x, int origin_y, Piece::Type currentPieceType)
 {
     int count = 0;
+    if(currentPieceType == Piece::Empty)
+    {
+        return count;
+    }
+
     if(m_board->getPiece(origin_x, origin_y).getType() == currentPieceType) 
     {
         count++;

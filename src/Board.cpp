@@ -132,7 +132,7 @@ std::vector<int> Board::getLegalMoves()
     std::vector<int> legalMoves;
     for(int i=0; i<m_topOfColumns.size(); i++)
     {
-        if(m_topOfColumns[i] != Board::ColumnFull)
+        if(m_topOfColumns[i] != Board::ColumnFull && m_topOfColumns[i] < 6)
         {
            legalMoves.push_back(i); 
         }

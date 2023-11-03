@@ -2,6 +2,7 @@
 #include "utils.hpp"
 
 #include <algorithm>
+#include <thread>
 
 
 MiniMaxPlayer::MiniMaxPlayer()
@@ -11,7 +12,7 @@ MiniMaxPlayer::MiniMaxPlayer()
 
 int MiniMaxPlayer::getMove(Board * board)
 {
-    int move = minimax(board, 0, 11, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), true).column;
+    int move = minimax(board, 0, m_treeDepth, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), true).column;
     return move;
 }
 

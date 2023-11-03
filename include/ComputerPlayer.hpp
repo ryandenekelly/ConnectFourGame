@@ -52,7 +52,7 @@ class MiniMaxPlayer : public ComputerPlayer
 
         Piece::Type getPiece();
     private:
-        int const m_treeDepth = 5;
+        int const m_treeDepth = 10;
 };
 
 #endif

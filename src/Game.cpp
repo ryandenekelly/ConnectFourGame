@@ -85,70 +85,95 @@ bool Game::AddPlayer(Game::OpponentType opponentType)
 
 bool Game::opponentMenu()
 {
+    bool startGame = false;
     bool runOpponentMenu = true;
     while(runOpponentMenu)
     {
-        std::cout << "Please select an opponent type:\n";
-        std::cout << "1) Reflex\n" << "2) MiniMax\n" << "3) ExpMax\n" << "B) Back\n";
+        std::cout << "\nPlease select an opponent type:\n";
+        std::cout << "1) Dumb\n" << "2) Smarter\n" << "B) Back\n";
         
         char oppSelection = 0;
-        //std::cin >> oppSelection;
-        oppSelection = '2';
+        std::cin >> oppSelection;
 
-        switch(oppSelection)
+        switch(std::toupper(oppSelection))
         {
             case '1':
-                m_opponentType = OpponentType::Reflex;  
-                return true;
+                std::cin.ignore();
+                std::cin.clear();
+                m_opponentType = OpponentType::Reflex; 
+                runOpponentMenu = false; 
+                startGame = true;
+                break;
 
             case '2':
+                std::cin.ignore();
+                std::cin.clear();
                 m_opponentType = OpponentType::MiniMax;
-                return true;
+                runOpponentMenu = false;
+                startGame = true;
+                break;
 
             case 'B':
-                return false;
+                std::cin.ignore();
+                std::cin.clear();
+                runOpponentMenu = false;
+                startGame = false;
+                break;
 
             default:
+                std::cin.ignore();
+                std::cout.clear();
                 std::cout << "Invalid Selection!\n";
                 break;
 
         }
     }
-    return false;
+    return startGame;
 }
 
 bool Game::startMenu()
 {
+    bool startGame = false;
     bool runStartMenu = true;
     while(runStartMenu)
     {
-        std::cout << "ConnectFour\n\n Please select an option from the menu:\n";
+        std::cout << "ConnectFour\n\nPlease select an option from the menu:\n\n";
         std::cout << "1) One Player\n" << "2) Two Player\n" << "X) Exit\n";
 
         char menuSelection = 0;
-        menuSelection = '1';
-        // std::cin >> menuSelection;
+        std::cin >> menuSelection;
 
-        switch(menuSelection)
+        switch(std::toupper(menuSelection))
         {
             case '1':
+                std::cin.ignore();
+                std::cin.clear();
                 m_gameType = GameType::OnePlayer;
-                opponentMenu();
-                return true;
-
+                startGame = opponentMenu();
+                runStartMenu = !startGame;
+                break;
             case '2':
+                std::cin.ignore();
+                std::cin.clear();
                 m_gameType = GameType::TwoPlayer;
-                return true;
-
-            case 'X':
                 runStartMenu = false;
+                startGame = true;
+                break;
+            case 'X':
+                std::cin.ignore();
+                std::cin.clear();
+                runStartMenu = false;
+                startGame = false;
                 break;
             default:
+                std::cin.ignore();
+                std::cin.clear();
+                std::cout << "Invalid input!\n";
                 break;
         }
     }
     
-    return true;
+    return startGame;
 }
 void Game::startGame()
 {
@@ -186,7 +211,8 @@ bool Game::initCurrentPlayer()
         return false;
     }
 
-    m_currentPlayer = m_playerOne;
+    srand(time(NULL));
+    m_currentPlayer = (rand() % (2)) == 0 ? m_playerOne : m_playerTwo;
     return true;
 }
 

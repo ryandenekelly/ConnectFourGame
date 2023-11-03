@@ -30,54 +30,51 @@ int main(int argc, char *argv[])
     Game game = Game();
 
     // Run the start menu
-    game.startMenu();
+    if(!game.startMenu())
+    {
+        return  0;
+    }
 
     // add players according to game type.
-        // two players; prompt two names.
-        if(game.getGameType() == Game::TwoPlayer)
-        {
-            std::cout << "Please enter name for Player1:\n";
-            std::string playerOneName;
-            playerOneName = "PlayerOne";
-            // std::cin >> playerOneName;
+    // two players; prompt two names.
+    if(game.getGameType() == Game::TwoPlayer)
+    {
+        std::cout << "Please enter name for Player1:\n";
+        std::string playerOneName;
+        std::getline(std::cin, playerOneName);
 
-            std::cout << "Please enter name for Player2:\n";
-            std::string playerTwoName;
-            playerTwoName = "PlayerTwo";
-            // std::cin >> playerTwoName;
+        std::cout << "Please enter name for Player2:\n";
+        std::string playerTwoName;
+        std::getline(std::cin, playerTwoName);
 
-            game.AddPlayer(playerOneName);
-            game.AddPlayer(playerTwoName);
-            
+        game.AddPlayer(playerOneName);
+        game.AddPlayer(playerTwoName);
+        
 
-        }
-        // one player; prompt one name and assign ai type
-        else if(game.getGameType() == Game::OnePlayer)
-        {
-            std::cout << "Please enter your name:\n";
+    }
+    // one player; prompt one name and assign ai type
+    else if(game.getGameType() == Game::OnePlayer)
+    {
+        std::cout << "Please enter your name:\n";
 
-            std::string playerOneName;
-            playerOneName = "PlayerOne";
-            // std::cin >> playerOneName;
+        std::string playerOneName;
+        std::getline(std::cin, playerOneName);
 
-            game.AddPlayer(playerOneName);
-            game.AddPlayer(game.getOpponentType());
+        game.AddPlayer(playerOneName);
+        game.AddPlayer(game.getOpponentType());
 
-            
-        }
+        
+    }
+
     game.initCurrentPlayer();
     /* Main gameplay loop*/
-
-    //==========================//
-    // game.changeTurn();
-    // game.getCurrentPlayer()->getMove(game.getBoard());
-
-    //===========================//
 
     // Print out the board at the start
     game.getBoard()->printBoard();
     while(1)
     {
+
+        std::cout << game.getCurrentPlayer()->getPlayerName() <<"'s turn!\n";
 
         // Get move from agent, loop until a valid move is recieved
         bool validMove = false;
