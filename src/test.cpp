@@ -1,3 +1,16 @@
+#include <iostream>
+#include <array>
+#include <chrono>
+
+#include "QuickValidator.hpp"
+#include "Validator.hpp"
+#include "Game.hpp"
+
+int test()
+{
+    using namespace std::chrono;
+
+    Game game = Game();
     QuickValidator quick = QuickValidator(game.getBoard());
     Validator validator = Validator(game.getBoard());
 
@@ -8,7 +21,7 @@
 
     
     nanoseconds ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(3);
+    quick.isWinningMove(3);
     nanoseconds ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -30,7 +43,7 @@
     game.getBoard()->placePiece(3, Piece::Red);
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(0);
+    quick.getStreak(0);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -50,7 +63,7 @@
     game.getBoard()->placePiece(5, Piece::Red);
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(3);
+    quick.getStreak(3);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -69,7 +82,7 @@
 
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(0);
+    quick.getStreak(0);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -92,9 +105,12 @@
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
+    game.getBoard()->placePiece(0, Piece::Red);
+    game.getBoard()->printBoard();
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(0);
+    
+    quick.isWinningMove(0);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -113,15 +129,17 @@
     game.getBoard()->placePiece(1, Piece::Red);
     game.getBoard()->placePiece(2, Piece::Red);
     game.getBoard()->placePiece(2, Piece::Red);
-
+    game.getBoard()->placePiece(2, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
 
+
+    game.getBoard()->printBoard();
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(2);
+    quick.isWinningMove(2);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -143,11 +161,13 @@
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
+    game.getBoard()->placePiece(3, Piece::Red);
     
 
+    game.getBoard()->printBoard();
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(3);
+    quick.isWinningMove(3);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";
 
@@ -165,15 +185,17 @@
     game.getBoard()->placePiece(1, Piece::Red);
     game.getBoard()->placePiece(2, Piece::Red);
     game.getBoard()->placePiece(2, Piece::Red);
+    game.getBoard()->placePiece(2, Piece::Red);
 
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
     game.getBoard()->placePiece(3, Piece::Red);
 
+    game.getBoard()->printBoard();
 
     ns1 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
-    quick.getStreakGeneric(2);
+    quick.isWinningMove(2);
     ns2 = duration_cast< nanoseconds >(system_clock::now().time_since_epoch());
     std::cout << "Quick: " << ns2.count()-ns1.count() << "\n";  
 
@@ -187,4 +209,5 @@
     game.getBoard()->resetBoard();
 
 
-    return true;
+    return 0;
+}

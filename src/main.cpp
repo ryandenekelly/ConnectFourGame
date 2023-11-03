@@ -11,13 +11,21 @@
 #include "Validator.hpp"
 #include "QuickValidator.hpp"
 #include "utils.hpp"
+#include "test.hpp"
 
 
-
+#define TEST 0
 
 int main(int argc, char *argv[])
 {
-using namespace std::chrono;
+    
+/*-------------------------------*/
+    #if TEST
+    test();
+    return 0;
+    #endif
+/*-------------------------------*/
+
     // Create a new game
     Game game = Game();
 
@@ -60,6 +68,12 @@ using namespace std::chrono;
     game.initCurrentPlayer();
     /* Main gameplay loop*/
 
+    //==========================//
+    // game.changeTurn();
+    // game.getCurrentPlayer()->getMove(game.getBoard());
+
+    //===========================//
+
     // Print out the board at the start
     game.getBoard()->printBoard();
     while(1)
@@ -67,45 +81,42 @@ using namespace std::chrono;
 
         // Get move from agent, loop until a valid move is recieved
         bool validMove = false;
+        QuickValidator::Streak streak;
+        bool winningMove = false;
         int move; 
         Piece::Type currentPiece = game.getCurrentPlayer()->getPiece();
         while(!validMove)
         {   
             // Get the move from the player agent.
             move = game.getCurrentPlayer()->getMove(game.getBoard());
-            // Place the piece if the move is valid.
-            validMove = game.getBoard()->placePiece(move, currentPiece);
-            if(!validMove)
+            if(game.getBoard()->checkMove(move))
+            {
+                validMove = true;
+                QuickValidator validator = QuickValidator(game.getBoard());
+                game.getBoard()->placePiece(move, currentPiece);
+                streak = validator.isWinningMove(move);
+                winningMove = (streak.count >=4) && (streak.type == game.getCurrentPlayer()->getPiece());
+            }
+            else
             {   
                 // If move is invalid - re-prompt
                 std::cout << "Invalid Move!\n";
-                continue;
             }
 
         }
         // Print out the board after the move
         game.getBoard()->printBoard();
 
-
-        // NB: I know that checking the whole board at the end of each turn
-        // for a win condition is not the best way to do it, but it's implemneted
-        // and I can't be bothered changing it. I will change it if speed because an issue.
-
-        //TODO: Make win validation check just the siz direction around the piece that was placed
-        //** it's O(8*4) vs ~O(7*6*2 + 28*2) **//
+        if(winningMove)
         {
-            WinValidator validator = WinValidator(game.getBoard());
-            if(validator.isGameOver() && !game.isBoardFull())
-            {
-                std::cout << game.getCurrentPlayer()->getPlayerName() << " wins!\n";
-                break;
-            }
-            else if(game.isBoardFull())
-            {
-                std::cout << "Board is full!\n";
-                break;
-            }
-        }      
+            std::cout << game.getCurrentPlayer()->getPlayerName() << " wins!\n";
+            return 0;
+        }
+        if(game.getBoard()->isBoardFull())
+        {
+            std::cout << "Board full!\n";
+            return 0;
+        }   
         
         // Switch the turn.
         game.changeTurn();

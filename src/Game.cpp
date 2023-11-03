@@ -56,10 +56,6 @@ bool Game::AddPlayer(Game::OpponentType opponentType)
             case Game::MiniMax:
                 m_playerOne = new MiniMaxPlayer();
                 return true;
-
-            case Game::ExpMax:
-                m_playerOne = new ExpMaxPlayer();
-                return true;
             
             default:
             return false;
@@ -74,11 +70,7 @@ bool Game::AddPlayer(Game::OpponentType opponentType)
                 return true;
             
             case Game::MiniMax:
-                m_playerTwo = new MiniMaxPlayer();
-                return true;
-
-            case Game::ExpMax:
-                m_playerTwo = new ExpMaxPlayer();
+                m_playerTwo = new MiniMaxPlayer(Piece::Blue);
                 return true;
             
             default:
@@ -101,7 +93,7 @@ bool Game::opponentMenu()
         
         char oppSelection = 0;
         //std::cin >> oppSelection;
-        oppSelection = '1';
+        oppSelection = '2';
 
         switch(oppSelection)
         {
@@ -111,10 +103,6 @@ bool Game::opponentMenu()
 
             case '2':
                 m_opponentType = OpponentType::MiniMax;
-                return true;
-
-            case '3':
-                m_opponentType = OpponentType::ExpMax;
                 return true;
 
             case 'B':

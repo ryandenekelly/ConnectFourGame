@@ -53,3 +53,31 @@ Quick: 700      Validator: 2100
 Quick: 1000     Validator: 2600
 Quick: 600      Validator: 2400
 Quick: 1100     Validator: 3800
+
+---------------------------------
+Quick: 1000     Validator: 6900
+Quick: 900      Validator: 3500
+Quick: 2000     Validator: 3700
+Quick: 1900     Validator: 3600
+Quick: 1100     Validator: 5000
+Quick: 900      Validator: 4400
+Quick: 900      Validator: 2700
+Quick: 500      Validator: 2600
+
+Quick: 2000     Validator: 5500
+Quick: 1100     Validator: 3100
+Quick: 1000     Validator: 3100
+Quick: 700      Validator: 2100
+Quick: 600      Validator: 2000
+Quick: 800      Validator: 2200
+Quick: 1000     Validator: 3300
+Quick: 1100     Validator: 3500
+
+Quick: 11300    Validator: 4500
+Quick: 800      Validator: 1500
+Quick: 400      Validator: 1600
+Quick: 400      Validator: 1500
+Quick: 1100     Validator: 2500
+Quick: 700      Validator: 1700
+Quick: 500      Validator: 1600
+Quick: 500      Validator: 1500

@@ -2,6 +2,7 @@
 #define BOARD_HPP
 
 #include <array>
+#include <vector>
 #include "Piece.hpp"
 
 class Board
@@ -15,7 +16,10 @@ class Board
         int getHeight();
         int getWidth();
         std::array<int, 7> getTopOfColumns();
+        std::vector<int> getLegalMoves();
+        bool isBoardFull();
         void resetBoard();
+        bool checkMove(int move);
 
         enum ColumnStatus
         {
@@ -29,6 +33,9 @@ class Board
         static constexpr int m_width = 7;
         std::array<std::array<Piece, m_height>, m_width> m_gameBoard;
         std::array<int,7> m_topOfColumns;
+
+        bool m_boardFull;
+        int m_totalPieces;
 
         inline static const std::string TOP_BORDER  = " _____________________\n";
         inline static const std::string BOTTOM_BORDER = "  0  1  2  3  4  5  6\n\n";

@@ -9,6 +9,12 @@ class QuickValidator
     public:
         QuickValidator(Board * board);
 
+        struct Streak
+        {
+            int count;
+            Piece::Type type;
+        };
+        
         enum Direction
         {
             Left,
@@ -20,8 +26,8 @@ class QuickValidator
             Down
         };
 
-        bool isWinningMove();
-        int getStreak(int x_pos);
+        Streak isWinningMove(int x);
+        Streak getStreak(int x_pos);
         inline int countLeft(int origin_x, int origin_y, Piece::Type currentPieceType);
         inline int countRight(int origin_x, int origin_y, Piece::Type currentPieceType);
         inline int countBackwardsDiagonalUp(int origin_x, int origin_y, Piece::Type currentPieceType);
@@ -30,10 +36,6 @@ class QuickValidator
         inline int countForwardsDiagonalDown(int origin_x, int origin_y, Piece::Type currentPieceType);
         inline int countDown(int origin_x, int origin_y, Piece::Type currentPieceType);
 
-        inline int countGeneric(int origin_x, int origin_y, Piece::Type currentPieceType, Direction direction);
-        int getStreakGeneric(int x_pos);
-        int getExpressionX(int origin_x, int step, QuickValidator::Direction direction);
-        int getExpressionY(int origin_y, int step, QuickValidator::Direction direction);
     
     private:
         Board * m_board;

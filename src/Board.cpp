@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <vector>
 
 Board::Board()
 {
@@ -63,13 +64,22 @@ void Board::printBoard()
 
 }
 
-bool Board::placePiece(int x_pos, Piece piece)
+bool Board::checkMove(int move)
 {
-    if(piece.getType() == Piece::Empty)
+    if(move >= m_width || move < 0)
     {
         return false;
     }
-    if(x_pos >= m_width)
+    int topOfColumn = m_topOfColumns[move];
+    if(topOfColumn >= m_height || topOfColumn == ColumnFull)
+    {
+        return false;
+    }
+    return true;
+}
+bool Board::placePiece(int x_pos, Piece piece)
+{
+    if(piece.getType() == Piece::Empty)
     {
         return false;
     }
@@ -77,16 +87,17 @@ bool Board::placePiece(int x_pos, Piece piece)
     int topOfColumn = m_topOfColumns[x_pos];
     if(topOfColumn >= m_height)
     {
+        m_topOfColumns[x_pos] = ColumnFull;
         return false;
     }
-    m_gameBoard[x_pos][topOfColumn] = piece;
-
-    // if column is full mark it with -1.
-    if(++m_topOfColumns[x_pos]>=m_height)
+    else
     {
-        m_topOfColumns[x_pos] = ColumnFull;
+        m_gameBoard[x_pos][topOfColumn] = piece;
+        m_topOfColumns[x_pos]++;
     }
     
+    m_boardFull = ++m_totalPieces == m_height*m_width;
+
     return true;
 
     
@@ -116,6 +127,20 @@ std::array<int,7> Board::getTopOfColumns()
     return m_topOfColumns;
 }
 
+std::vector<int> Board::getLegalMoves()
+{
+    std::vector<int> legalMoves;
+    for(int i=0; i<m_topOfColumns.size(); i++)
+    {
+        if(m_topOfColumns[i] != Board::ColumnFull)
+        {
+           legalMoves.push_back(i); 
+        }
+        
+    }
+    return legalMoves;
+}
+
 void Board::resetBoard()
 {
     // Reset "stack pointers".
@@ -126,4 +151,9 @@ void Board::resetBoard()
     {
         std::fill(a.begin(), a.end(), Piece::Empty);
     }
+}
+
+bool Board::isBoardFull()
+{
+    return m_boardFull;
 }
