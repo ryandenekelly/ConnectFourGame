@@ -61,7 +61,8 @@
         "sstream": "cpp",
         "chrono": "cpp",
         "ratio": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "cinttypes": "cpp"
     },
     "cmake.configureOnOpen": true
 }
